@@ -1,0 +1,34 @@
+.instructorList{
+    flex: 4;
+    margin-inline-start: 20px;
+    margin-inline-end: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.instructorList h1{
+    color: #00aae4;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.instructorListDelete{
+    color: red;
+    cursor: pointer;
+    
+}
+
+.instructorListEdit{
+    color: green;
+    cursor: pointer;
+}
+
+.linkListEdit{
+    text-align: center;
+}
+
+.botonInsertar{
+    float: right;
+}
