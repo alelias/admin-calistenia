@@ -9,8 +9,8 @@ const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
-const baseUrl = "http://67.205.155.156:4500/api/ejercicio";
-const baseUrlDif = "http://67.205.155.156:4500/api/dificultad";
+const baseUrl = "https://back-calistenia.herokuapp.com/api/ejercicio";
+const baseUrlDif = "https://back-calistenia.herokuapp.com/api/dificultad";
 
 const layout = {
   labelCol: {

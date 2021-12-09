@@ -7,7 +7,7 @@ import "./dificultList.css";
 const axios = require("axios");
 const { Item } = Form;
 
-const baseUrl = "http://67.205.155.156:4500/api/dificultad";
+const baseUrl = "https://back-calistenia.herokuapp.com/api/dificultad";
 
 const layout = {
   labelCol: {

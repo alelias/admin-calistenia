@@ -7,7 +7,7 @@ import "./newList.css";
 const axios = require("axios");
 const { Item } = Form;
 
-const baseUrl = "http://67.205.155.156:4500/api/noticia";
+const baseUrl = "https://back-calistenia.herokuapp.com/api/noticia";
 
 const layout = {
   labelCol: {

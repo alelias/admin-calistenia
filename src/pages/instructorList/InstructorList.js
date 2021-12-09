@@ -9,7 +9,7 @@ import './instructorList.css'
 const axios = require('axios');
 const { Item } = Form;
 
-const baseUrl="http://67.205.155.156:4500/api/instructor";
+const baseUrl="https://back-calistenia.herokuapp.com/api/instructor";
 
 const layout={
     labelCol:{
