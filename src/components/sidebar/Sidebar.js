@@ -25,7 +25,7 @@ export default function Sidebar() {
             <li className="sidebarListItem">
               <Timeline className="sidebarIcon" />
               <Link className="link" to={"/dashboard/home"}>
-                <span>Analitica</span>
+                <span>Inicio</span>
               </Link>
               {/* style={{ textDecoration: 'none', color: 'white' }} */}
             </li>

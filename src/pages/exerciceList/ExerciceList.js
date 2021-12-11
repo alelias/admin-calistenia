@@ -4,13 +4,12 @@ import "antd/dist/antd.css";
 import { EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./exerciceList.css";
-const axios = require("axios");
+import axios from 'axios'
 const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
 const baseUrl = "https://back-calistenia.herokuapp.com/api/ejercicio";
-const baseUrlDif = "https://back-calistenia.herokuapp.com/api/dificultad";
 
 const layout = {
   labelCol: {
@@ -23,7 +22,6 @@ const layout = {
 
 export default function ExerciceList() {
   const [data, setData] = useState([]);
-  const [dataDif, setDataDif] = useState([]);
   const [exercices, setExercices] = useState({
     idejercicio: "",
     nombre: "",
@@ -34,10 +32,10 @@ export default function ExerciceList() {
       nombre: "",
     },
   });
-
-  const [dificultad, setDificultad] = useState({
+  const [dataDif, setDataDif] = useState([]);
+  const [dificults, setDificults] = useState({
     iddificultad: "",
-    nombre: "",
+    nombre: ""
   });
 
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -64,8 +62,8 @@ export default function ExerciceList() {
 
   const handleChangeDif = (e) => {
     const { name, value } = e.target;
-    setDificultad({ ...dificultad, [name]: value });
-    console.log(dificultad);
+    setDificults({ ...dificults, [name]: value });
+    console.log(dificults);
   };
 
   const seleccionarExercices = (exercices, caso) => {
@@ -74,8 +72,7 @@ export default function ExerciceList() {
   };
 
   const peticionGet = async () => {
-    await axios
-      .get(baseUrl)
+    await axios.get(baseUrl)
       .then((response) => {
         setData(response.data);
       })
@@ -84,22 +81,21 @@ export default function ExerciceList() {
       });
   };
 
-  const peticionGetDif = async () => {
-    await axios
-      .get(baseUrlDif)
-      .then((response) => {
-        setDataDif(response.dataDif);
-        console.log(dataDif);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  useEffect(() => {
+    const peticionGetDif = async () => {
+      const baseUrlDif = "https://back-calistenia.herokuapp.com/api/dificultad";
+
+      const dificults = await axios.get(baseUrlDif);
+      setDataDif(dificults.data)
+      console.log(dificults);
+    };
+    peticionGetDif()
+  }, []);
+ 
 
   const peticionPost = async () => {
     //delete artista.id;
-    await axios
-      .post(baseUrl, exercices)
+    await axios.post(baseUrl, exercices)
       .then((response) => {
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
@@ -110,8 +106,7 @@ export default function ExerciceList() {
   };
 
   const peticionPut = async () => {
-    await axios
-      .put(baseUrl + "/" + exercices.idejercicio, exercices)
+    await axios.put(baseUrl + "/" + exercices.idejercicio, exercices)
       .then((response) => {
         var dataAuxiliar = data;
         dataAuxiliar.map((elemento) => {
@@ -128,8 +123,7 @@ export default function ExerciceList() {
   };
 
   const peticionDelete = async () => {
-    await axios
-      .delete(baseUrl + "/" + exercices.idejercicio)
+    await axios.delete(baseUrl + "/" + exercices.idejercicio)
       .then((response) => {
         setData(
           data.filter(
@@ -147,9 +141,7 @@ export default function ExerciceList() {
     peticionGet();
   }, []);
 
-  useEffect(() => {
-    peticionGetDif();
-  }, []);
+
 
   const columns = [
     {
@@ -251,12 +243,15 @@ export default function ExerciceList() {
               name="iddificultad"
               onChange={handleChangeDif}
             >
-              {/*
-        dificultad.map(ele =>
-        (
-          <Option key={ele.iddificultad} value={ele.iddificultad}>{ele.nombre}</Option>
-        ))
-        */}
+              
+              {
+              dataDif?.map(dificultad =>
+              (
+                 <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
+              ))
+              }
+            
+           
             </Select>
           </Item>
         </Form>
@@ -305,7 +300,13 @@ export default function ExerciceList() {
               name="iddificultad"
               onChange={handleChange}
             >
-              <Option>{exercices && exercices.dificultade.nombre}</Option>
+               {
+              dataDif?.map(dificultad =>
+              (
+                 <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
+              ))
+              }
+            
             </Select>
           </Item>
         </Form>

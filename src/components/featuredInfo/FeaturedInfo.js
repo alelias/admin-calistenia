@@ -4,35 +4,22 @@ import "./featuredInfo.css"
 const fotoRutina = '../../img/rutina3.jpg'
 const fotoNoticia = '../../img/noticia.jpg'
 const fotoEvento = '../../img/evento.jpg'
+const imgRut = '../../img/calisteni.jpeg'
 
 export default function FeaturedInfo() {
     return (
         <div className="featured">
             <div className="featuredItem">
-                <span className="featuredTitle">Rutinas</span>
+                <span className="featuredTitle">Bienvenido a Calistenia APP</span>
                 <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">2315</span>
-                    <img src={fotoRutina} className="imgRut"  alt="rutina" />
+                 
+                    <img src={imgRut} className="imgRut"  alt="rutina" />
 
                 </div>
-                <span className="featuredSub">Rutinas realizadas este mes</span>
+                
             </div>
-            <div className="featuredItem">
-                <span className="featuredTitle">Noticias</span>
-                <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">23</span>
-                    <img src={fotoNoticia} className="imgRut" alt="noticia"  />
-                </div>
-                <span className="featuredSub">Noticias visualizadas este mes</span>
-            </div>
-            <div className="featuredItem">
-                <span className="featuredTitle">Eventos</span>
-                <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">5</span>
-                    <img src={fotoEvento} className="imgRut" alt="evento"  />
-                </div>
-                <span className="featuredSub">Eventos realizados este mes</span>
-            </div>
+          
+           
         </div>
     )
 }

@@ -9,11 +9,8 @@ export default function Home() {
     return (
         <div className="home">
             <FeaturedInfo />
-            
-            <div className="homeWidgets">
-                <WidgetSm />
-                <WidgetLg />
-            </div>
+
+           
         </div>
     )
 }

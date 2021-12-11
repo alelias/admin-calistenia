@@ -8,7 +8,7 @@ const { TextArea } = Input;
 const axios = require("axios");
 const { Item } = Form;
 
-const baseUrl = "http://67.205.155.156:4500/api/parque";
+const baseUrl = "https://back-calistenia.herokuapp.com/api/parque";
 
 const layout = {
   labelCol: {
@@ -57,8 +57,7 @@ export default function ParkList() {
   };
 
   const peticionGet = async () => {
-    await axios
-      .get(baseUrl)
+    await axios.get(baseUrl)
       .then((response) => {
         setData(response.data);
       })
