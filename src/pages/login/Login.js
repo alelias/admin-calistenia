@@ -1,23 +1,47 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import { Button } from "antd";
 import axios from 'axios'
-
+import { useHistory } from 'react-router'
+import Swal from 'sweetalert2'
 import './login.css'
 
 const Login = () => {
 
-    const [correo, setCorreo] = useState("")
-    const [password, setPassword] = useState("")
-    //const [loginStatus, setLoginStatus] = useState("")
+    const {push} = useHistory()
+
+    const [entrar, setEntrar] = useState({
+        correo: "", 
+        password: "" 
+    })
+
+    const inputChange = ({ target }) => {
+        const { name, value } = target
+        setEntrar({
+            ...entrar,
+            [name]: value
+        })
+    }
 
     const login = () => {
         
-        axios.post("https://back-calistenia.herokuapp.com/api/login", {
-            correo: correo,
-            password: password
-        }).then((response) => {
-            console.log(response);
+        axios.post("https://back-calistenia.herokuapp.com/api/login", entrar).then((response) => {
+        
+       if(response.data.success){
+            push('/dashboard/home')
+        }else{
+            Swal.fire(
+                'Error',
+                'Ingresar correo y contraseña validos',
+                'error'
+              )
+        }  
+    
+          
+        }).catch(({ response }) => {
+            console.log(response.data)
         })
+        
     }
 
     return ( 
@@ -27,22 +51,20 @@ const Login = () => {
             <h2>Calistenia APP</h2>
                 <input 
                     type="text" 
+                    name="correo"
                     placeholder="email" 
                     className="loginInput"
-                    onChange={(e) => {
-                        setCorreo(e.target.value)
-                    }}    
+                    onChange={inputChange}    
                 />
                 <input 
                     type="password" 
+                    name="password"
                     placeholder="password" 
                     className="loginInput" 
-                    onChange={(e) => {
-                        setPassword(e.target.value)
-                    }} 
+                    onChange={inputChange} 
                 />
                 
-                <Link onClick={login} className="loginButton" to={"/dashboard/home"}>Ingresar</Link>
+                <Button  onClick={login} className="loginButton" >Ingresar</Button>
                 {/*to={"/dashboard/home"} */}
             </form>
         </div>

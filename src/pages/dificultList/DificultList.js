@@ -197,7 +197,7 @@ export default function DificultList() {
         ]}
       >
         <Form {...layout}>
-          <Item label="Artista">
+          <Item label="Nombre">
             <Input
               name="nombre"
               onChange={handleChange}

@@ -24,7 +24,7 @@ export default function UserList() {
     idusuario: "",
     nombre: "",
     correo: "",
-    password: "",
+    password: ""
   });
 
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -113,6 +113,7 @@ export default function UserList() {
   useEffect(() => {
     peticionGet();
   }, []);
+
   const columns = [
     {
       title: "Nombre",
@@ -123,11 +124,6 @@ export default function UserList() {
       title: "Correo",
       dataIndex: "correo",
       key: "correo",
-    },
-    {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
     },
 
     {

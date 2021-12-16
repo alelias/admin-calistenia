@@ -2,6 +2,12 @@ import React from 'react'
 import "./widgetLg.css"
 
 export default function WidgetLg() {
+    //programar visualizar ultimos eventos, fecha
+    //ultimas noticias
+    //total de ejercicios
+    //total rutinas
+    //total parques
+
     return (
         <div className="widgetLg">
             <h3 className="widgetLgTitle">Proximos Eventos</h3>

@@ -6,17 +6,17 @@ import {
   Input,
   Form,
   DatePicker,
-  TimePicker,
   Select,
 } from "antd";
+import moment from 'moment';
 import "antd/dist/antd.css";
-import { EditOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+//import { EditOutlined } from "@ant-design/icons";
+//import { Link } from "react-router-dom";
 import "./eventList.css";
 const axios = require("axios");
 const { Item } = Form;
 const { TextArea } = Input;
-const { Option } = Select;
+//const { Option } = Select;
 
 const baseUrl = "https://back-calistenia.herokuapp.com/api/evento";
 
@@ -35,8 +35,7 @@ export default function EventList() {
     idevento: "",
     nombre: "",
     fecha: "",
-    descripcion: "",
-    idinstructor: null,
+    descripcion: ""
   });
 
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -58,7 +57,7 @@ export default function EventList() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEvents({ ...events, [name]: value });
-    console.log(events);
+    alert(events);
   };
 
   const seleccionarEvents = (events, caso) => {
@@ -82,6 +81,7 @@ export default function EventList() {
     await axios
       .post(baseUrl, events)
       .then((response) => {
+
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
       })
@@ -144,11 +144,6 @@ export default function EventList() {
       width: 280,
     },
     {
-      title: "ID Instructor",
-      dataIndex: "idinstructor",
-      key: "idinstructor",
-    },
-    {
       title: "Acciones",
       key: "acciones",
       render: (fila) => (
@@ -209,28 +204,17 @@ export default function EventList() {
             <Input name="nombre" onChange={handleChange} />
           </Form.Item>
           <Form.Item label="Fecha">
-            <DatePicker name="fecha" onChange={handleChange} />
+          <DatePicker
+              name="fecha"
+              style={{ width: 315 }}
+              onChange={(fecha) => setEvents(fecha)}
+            />
           </Form.Item>
 
           <Form.Item label="Descripcion">
             <TextArea rows={4} name="descripcion" onChange={handleChange} />
           </Form.Item>
-          <Form.Item Label="Instructor">
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Selecciona Instructor"
-              optionFilterProp="children"
-              onChange={handleChange}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
-          </Form.Item>
+
         </Form>
       </Modal>
 
@@ -270,22 +254,7 @@ export default function EventList() {
               value={events && events.descripcion}
             />
           </Item>
-          <Item Label="Instructor">
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Selecciona Instructor"
-              optionFilterProp="children"
-              onChange={handleChange}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
-          </Item>
+  
         </Form>
       </Modal>
 

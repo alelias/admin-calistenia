@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Input, Form, Select } from "antd";
 import "antd/dist/antd.css";
-import { EditOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+//import { EditOutlined } from "@ant-design/icons";
+//import { Link } from "react-router-dom";
 import "./routineList.css";
-const axios = require("axios");
+import axios from "axios";
 const { Item } = Form;
 const { Option } = Select;
 const { TextArea } = Input;
 
 const baseUrl = "https://back-calistenia.herokuapp.com/api/rutina";
-const baseUrlDif = "https://back-calistenia.herokuapp.com/api/dificultad";
 
 const layout = {
   labelCol: {
@@ -22,24 +21,22 @@ const layout = {
 };
 
 export default function RoutineList() {
+
   const [data, setData] = useState([]);
-  const [dataDif, setDataDif] = useState([]);
   const [routines, setRoutines] = useState({
     idrutina: "",
     nombre: "",
     descripcion: "",
     link: "",
+    iddificultad: "",
     dificultade: {
       iddificultad: "",
       nombre: "",
-    },
+    }
   });
 
-  const [dificultad, setDificultad] = useState({
-    iddificultad: "",
-    nombre: "",
-  });
-
+  const [dataDif, setDataDif] = useState([]);
+ 
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
@@ -56,21 +53,32 @@ export default function RoutineList() {
     setModalEliminar(!modalEliminar);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRoutines({ ...routines, [name]: value });
-    console.log(routines);
+  const handleChange = ({target}) => {
+
+    setRoutines(routines => (
+      { ...routines, [target.name] : target.value }
+    ) );
+   
   };
 
-  const handleChangeDif = (e) => {
-    const { name, value } = e.target;
-    setDificultad({ ...dificultad, [name]: value });
-    console.log(dificultad);
+  const handleSelectChange = (selected) => {
+
+    setRoutines(routines => (
+      { ...routines, iddificultad : selected }
+    ));
+   
   };
 
-  const handleChangeEje = (value) => {
-    console.log(`selected ${value}`);
-  };
+  useEffect(() => {
+    const peticionGetDif = async () => {
+      const baseUrlDif = "https://back-calistenia.herokuapp.com/api/dificultad";
+
+      const dificults = await axios.get(baseUrlDif);
+      setDataDif(dificults.data)
+     
+    };
+    peticionGetDif()
+  }, []);
 
   const seleccionarRoutines = (routines, caso) => {
     setRoutines(routines);
@@ -78,8 +86,7 @@ export default function RoutineList() {
   };
 
   const peticionGet = async () => {
-    await axios
-      .get(baseUrl)
+    await axios.get(baseUrl)
       .then((response) => {
         setData(response.data);
       })
@@ -88,21 +95,12 @@ export default function RoutineList() {
       });
   };
 
-  const peticionGetDif = async () => {
-    await axios
-      .get(baseUrlDif)
-      .then((response) => {
-        setDataDif(response.dataDif);
-        console.log(dataDif);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const peticionPost = async () => {
-    //delete artista.id;
-    await axios
-      .post(baseUrl, routines)
+
+  const peticionPost = async (e) => {
+    
+    e.preventDefault()
+    console.log(routines);
+    await axios.post(baseUrl, routines)
       .then((response) => {
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
@@ -113,8 +111,7 @@ export default function RoutineList() {
   };
 
   const peticionPut = async () => {
-    await axios
-      .put(baseUrl + "/" + routines.idrutina, routines)
+    await axios.put(baseUrl + "/" + routines.idrutina, routines)
       .then((response) => {
         var dataAuxiliar = data;
         dataAuxiliar.map((elemento) => {
@@ -131,8 +128,7 @@ export default function RoutineList() {
   };
 
   const peticionDelete = async () => {
-    await axios
-      .delete(baseUrl + "/" + routines.idrutina)
+    await axios.delete(baseUrl + "/" + routines.idrutina)
       .then((response) => {
         setData(
           data.filter((elemento) => elemento.idrutina !== routines.idrutina)
@@ -148,9 +144,7 @@ export default function RoutineList() {
     peticionGet();
   }, []);
 
-  useEffect(() => {
-    peticionGetDif();
-  }, []);
+ 
 
   const columns = [
     {
@@ -231,7 +225,7 @@ export default function RoutineList() {
           </Button>,
         ]}
       >
-        <Form {...layout}>
+        <Form {...layout} >
           <Item label="Nombre">
             <Input name="nombre" onChange={handleChange} />
           </Item>
@@ -246,14 +240,17 @@ export default function RoutineList() {
               defaultValue="--Seleccione--"
               style={{ width: 315 }}
               name="iddificultad"
-              onChange={handleChangeDif}
+              onChange={handleSelectChange}
             >
-              {/*
-        dificultad.map(ele =>
-        (
-          <Option key={ele.iddificultad} value={ele.iddificultad}>{ele.nombre}</Option>
-        ))
-        */}
+              
+              {
+              dataDif.map((dificultad) =>
+              (
+                 <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
+              ))
+              }
+            
+           
             </Select>
           </Item>
         </Form>
@@ -272,12 +269,44 @@ export default function RoutineList() {
         ]}
       >
         <Form {...layout}>
-          <Item label="Artista">
+          <Item label="Nombre">
             <Input
               name="nombre"
               onChange={handleChange}
               value={routines && routines.nombre}
             />
+          </Item>
+  
+          <Item label="Descripcion">
+            <TextArea
+              rows={4}
+              name="descripcion"
+              onChange={handleChange}
+              value={routines && routines.descripcion}
+            />
+          </Item>
+          <Item label="Link">
+            <Input
+              name="link"
+              onChange={handleChange}
+              value={routines && routines.link}
+            />
+          </Item>
+          <Item label="Dificultad">
+            <Select
+              value={routines && routines.dificultade.nombre}
+              style={{ width: 315 }}
+              name="iddificultad"
+              onChange={handleSelectChange}
+            >
+               {
+              dataDif.map(dificultad =>
+              (
+                 <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
+              ))
+              }
+            
+            </Select>
           </Item>
         </Form>
       </Modal>

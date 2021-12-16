@@ -14,7 +14,6 @@ import NewList from '../../pages/newList/NewList';
 import ProfileList from '../../pages/profileList/ProfileList';
 import EventList from '../../pages/eventList/EventList';
 import ExerciceList from '../../pages/exerciceList/ExerciceList';
-import InstructorList from '../../pages/instructorList/InstructorList';
 
 
 function Dashboard() {
@@ -46,14 +45,8 @@ function Dashboard() {
           <Route path='/dashboard/news'>
             <NewList />
           </Route>
-          <Route path='/dashboard/events'>
-            <EventList />
-          </Route>
           <Route path='/dashboard/profiles'>
             <ProfileList />
-          </Route>
-          <Route path='/dashboard/instructor'>
-            <InstructorList />
           </Route>
         </Switch>
       </div>

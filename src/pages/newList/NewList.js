@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import "./newList.css";
 const axios = require("axios");
 const { Item } = Form;
-
+const { TextArea } = Input;
 const baseUrl = "https://back-calistenia.herokuapp.com/api/noticia";
+//const baseUrl = "http://localhost:4500/api/noticia";
 
 const layout = {
   labelCol: {
@@ -23,8 +24,7 @@ export default function NewList() {
   const [news, setNews] = useState({
     idnoticia: "",
     titulo: "",
-    descripcion: "",
-    fecha: "",
+    descripcion: ""
   });
 
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -125,11 +125,6 @@ export default function NewList() {
       key: "descripcion",
       width: 240,
     },
-    {
-      title: "Fecha",
-      dataIndex: "fecha",
-      key: "fecha",
-    },
 
     {
       title: "Acciones",
@@ -191,16 +186,10 @@ export default function NewList() {
           <Item label="Titulo">
             <Input name="titulo" onChange={handleChange} />
           </Item>
-          <Item label="Descripcion">
-            <Input name="descripcion" onChange={handleChange} />
-          </Item>
-          <Item label="Fecha">
-            <DatePicker
-              name="fecha"
-              style={{ width: 315 }}
-              onChange={handleChange}
-            />
-          </Item>
+  
+          <Form.Item label="Descripcion">
+            <TextArea rows={4} name="descripcion" onChange={handleChange} />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -224,18 +213,13 @@ export default function NewList() {
               value={news && news.titulo}
             />
           </Item>
+          
           <Item label="Descripcion">
-            <Input
+            <TextArea
+              rows={4}
               name="descripcion"
               onChange={handleChange}
               value={news && news.descripcion}
-            />
-          </Item>
-          <Item label="Fecha">
-            <DatePicker
-              name="fecha"
-              onChange={handleChange}
-              value={news && news.nombre}
             />
           </Item>
         </Form>

@@ -27,16 +27,14 @@ export default function ExerciceList() {
     nombre: "",
     descripcion: "",
     link: "",
+    iddificultad: "",
     dificultade: {
       iddificultad: "",
       nombre: "",
     },
   });
   const [dataDif, setDataDif] = useState([]);
-  const [dificults, setDificults] = useState({
-    iddificultad: "",
-    nombre: ""
-  });
+
 
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
@@ -54,16 +52,20 @@ export default function ExerciceList() {
     setModalEliminar(!modalEliminar);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setExercices({ ...exercices, [name]: value });
-    console.log(exercices);
+  const handleChange = ({target}) => {
+
+    setExercices(exercices => (
+      { ...exercices, [target.name] : target.value }
+    ) );
+   
   };
 
-  const handleChangeDif = (e) => {
-    const { name, value } = e.target;
-    setDificults({ ...dificults, [name]: value });
-    console.log(dificults);
+  const handleSelectChange = (selected) => {
+
+    setExercices(exercices => (
+      { ...exercices, iddificultad : selected }
+    ));
+   
   };
 
   const seleccionarExercices = (exercices, caso) => {
@@ -241,11 +243,11 @@ export default function ExerciceList() {
               defaultValue="--Seleccione--"
               style={{ width: 315 }}
               name="iddificultad"
-              onChange={handleChangeDif}
+              onChange={handleSelectChange}
             >
               
               {
-              dataDif?.map(dificultad =>
+              dataDif.map((dificultad) =>
               (
                  <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
               ))
@@ -298,10 +300,10 @@ export default function ExerciceList() {
               defaultValue={exercices && exercices.dificultade.nombre}
               style={{ width: 315 }}
               name="iddificultad"
-              onChange={handleChange}
+              onChange={handleSelectChange}
             >
                {
-              dataDif?.map(dificultad =>
+              dataDif.map(dificultad =>
               (
                  <Option key={dificultad.iddificultad} value={dificultad.iddificultad}>{dificultad.nombre}</Option>
               ))
