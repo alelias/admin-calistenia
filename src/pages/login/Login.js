@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from "react";
 import {Link} from 'react-router-dom'
 import { Button } from "antd";
 import axios from 'axios'
@@ -22,20 +22,30 @@ const Login = () => {
             [name]: value
         })
     }
+ 
 
     const login = () => {
         
         axios.post("https://back-calistenia.herokuapp.com/api/login", entrar).then((response) => {
+       
+      
         
-       if(response.data.success){
+       if(response.status == 200){
             push('/dashboard/home')
+        }else if(response.status == 500){
+            Swal.fire(
+                'Error',
+                'Ingresar correo y contraseña validos',
+                'error'
+              )
         }else{
             Swal.fire(
                 'Error',
                 'Ingresar correo y contraseña validos',
                 'error'
               )
-        }  
+        }
+        
     
           
         }).catch(({ response }) => {

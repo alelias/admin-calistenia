@@ -17,7 +17,7 @@
 }
 
 .featuredTitle {
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .featuredMoneyContainer {
@@ -38,6 +38,15 @@
 }
 
 .imgRut {
-    width: 400px;
-    height: 350px;
+    width: 120px;
+    height: 60px;
+}
+
+.fotoMapa {
+    width: 80px;
+    height: 60px;
+}
+.fotoRutina {
+    width: 70px;
+    height: 50px;
 }

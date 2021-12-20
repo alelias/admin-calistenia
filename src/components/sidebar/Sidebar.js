@@ -68,12 +68,12 @@ export default function Sidebar() {
             <li className="sidebarListItem">
               <LocalLibrary className="sidebarIcon" />
               <Link className="link" to={"/dashboard/news"}>
-                <span>Noticas y Eventos</span>
+                <span>Noticas</span>
               </Link>
             </li>
           </ul>
         </div>
-        {/*
+        
         <div className="sidebarMenu">
           <ul className="sidebarList">
             <li className="sidebarListItem ">
@@ -84,27 +84,8 @@ export default function Sidebar() {
             </li>
           </ul>
         </div>
-        */}
-        <div className="sidebarMenu">
-          <ul className="sidebarList">
-            <li className="sidebarListItem ">
-              <Event className="link" className="sidebarIcon" />
-              <Link className="link" to={"/dashboard/dificults"}>
-                <span>Dificultades</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="sidebarMenu">
-          <ul className="sidebarList">
-            <li className="sidebarListItem ">
-              <Contacts className="sidebarIcon" />
-              <Link className="link" to={"/dashboard/profiles"}>
-                <span>Perfiles</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
+        
+
         <div className="sidebarMenu">
           <ul className="sidebarList">
             <li className="sidebarListItem">

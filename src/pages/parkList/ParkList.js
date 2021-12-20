@@ -3,12 +3,15 @@ import { Table, Button, Modal, Input, Form, Image } from "antd";
 import "antd/dist/antd.css";
 import { EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import ReactMapGL, { Marker, NavigationControl }  from 'react-map-gl';
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./parkList.css";
 const { TextArea } = Input;
 const axios = require("axios");
 const { Item } = Form;
 
 const baseUrl = "https://back-calistenia.herokuapp.com/api/parque";
+
 
 const layout = {
   labelCol: {
@@ -17,6 +20,15 @@ const layout = {
   wrapperCol: {
     span: 16,
   },
+};
+
+
+
+const navStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  padding: "10px",
 };
 
 export default function ParkList() {
@@ -28,6 +40,18 @@ export default function ParkList() {
     longitud: "",
     descripcion: "",
   });
+
+  const [mapa, setMapa] = useState([]);
+
+  const [viewport, setViewport] = useState({
+    width: 1200,
+    height: 300,
+    latitude: -33.53199106757794,
+    longitude: -70.77501632397149,
+    zoom: 15,
+    pitch: 30,
+  });
+
 
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
@@ -48,7 +72,7 @@ export default function ParkList() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setParks({ ...parks, [name]: value });
-    console.log(parks);
+   
   };
 
   const seleccionarParks = (parks, caso) => {
@@ -56,9 +80,23 @@ export default function ParkList() {
     caso === "Editar" ? abrirCerrarModalEditar() : abrirCerrarModalEliminar();
   };
 
+  useEffect(() => {
+    const peticionGetMapa = async () => {
+      const baseUrlParque = "https://back-calistenia.herokuapp.com/api/parque";
+
+      const mapa = await axios.get(baseUrlParque);
+      setMapa(mapa.data)
+      console.log(mapa.data)
+     
+    };
+    peticionGetMapa()
+  }, []);
+
   const peticionGet = async () => {
+    
     await axios.get(baseUrl)
       .then((response) => {
+      
         setData(response.data);
       })
       .catch((error) => {
@@ -87,6 +125,9 @@ export default function ParkList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idparque === parks.idparque) {
             elemento.nombre = parks.nombre;
+            elemento.latitud = parks.latitud;
+            elemento.longitud = parks.longitud;
+            elemento.descripcion = parks.descripcion;
           }
         });
         setData(dataAuxiliar);
@@ -160,16 +201,86 @@ export default function ParkList() {
     },
   ];
   return (
+    <>
+    {/*
+    <div style={styles}>
+        <ReactMapGL
+          mapStyle={"mapbox://styles/mapbox/dark-v9"}
+          mapboxApiAccessToken={
+            "pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNrd2xocGtvMjA1bWsycHByeWttMHkwNGQifQ.EF73mGbhH1BYHtA83lEg8A"
+          }
+          {...viewport}
+          onViewportChange={(nextViewport) => setViewport(nextViewport)}
+        >
+          {data &&
+            data.map((park) => (
+              <Marker
+                latitude={park.latitud}
+                longitude={park.longitud}
+                offsetLeft={-20}
+                offsetTop={-10}
+              >
+                <img
+                  src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png"
+                  width={50}
+                  height={50}
+                />
+              </Marker>
+            ))}
+
+          <div className="nav" style={navStyle}>
+            <NavigationControl />
+          </div>
+        </ReactMapGL>
+      </div>
+            */}
     <div className="parkList">
+    
       <br />
       <h1>Parques</h1>
+      <ReactMapGL
+    mapboxApiAccessToken={
+      "pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNrd2xocGtvMjA1bWsycHByeWttMHkwNGQifQ.EF73mGbhH1BYHtA83lEg8A"
+    }
+      {...viewport}
+      onViewportChange={nextViewport => setViewport(nextViewport)}
+    >
+      {
+            data.map((park) => (
+              <Marker
+                latitude={parseFloat(park.latitud)}
+                longitude={parseFloat(park.longitud)}
+                offsetLeft={-20}
+                offsetTop={-10}
+              >
+                <img
+                  src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png"
+                  width={50}
+                  height={50}
+                />
+              </Marker>
+            ))
+      }
+              
+{/* 
+            <Marker latitude={-33.53199106757794} longitude={-70.77501632397149} offsetLeft={-20} offsetTop={-10}>
+                    <img src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png" width={50} height={50}/>
+                </Marker>
+                <Marker latitude={-33.52771605667408} longitude={-70.77797748252992} offsetLeft={-20} offsetTop={-10}>
+                    <img src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png" width={50} height={50}/>
+                </Marker>
+*/}
+      <div className="nav" style={navStyle}>
+            <NavigationControl />
+          </div>
+    </ReactMapGL>
       <br />
       <Button
         type="primary"
         className="botonInsertar"
         onClick={abrirCerrarModalInsertar}
       >
-        Insertar Nuevo Parque
+        Registrar Parque Manualmente
       </Button>
       <br />
       <br />
@@ -270,5 +381,6 @@ export default function ParkList() {
         <b>{parks && parks.nombre}</b>?
       </Modal>
     </div>
+    </>
   );
 }

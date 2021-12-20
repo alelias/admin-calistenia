@@ -114,6 +114,9 @@ export default function ExerciceList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idejercicio === exercices.idejercicio) {
             elemento.nombre = exercices.nombre;
+            elemento.descripcion = exercices.descripcion;
+            elemento.link = exercices.link;
+            elemento.iddificultad = exercices.iddificultad;
           }
         });
         setData(dataAuxiliar);

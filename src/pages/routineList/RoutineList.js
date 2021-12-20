@@ -117,6 +117,9 @@ export default function RoutineList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idrutina === routines.idrutina) {
             elemento.nombre = routines.nombre;
+            elemento.descripcion = routines.descripcion;
+            elemento.link = routines.link;
+            elemento.iddificultad = routines.iddificultad;
           }
         });
         setData(dataAuxiliar);

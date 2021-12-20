@@ -24,7 +24,7 @@ function Dashboard() {
         <Sidebar />
         <Switch>
           
-          <Route path='/dashboard/home'>
+          <Route exact path='/dashboard/home'>
             <Home />
           </Route>
           <Route path='/dashboard/users'>
@@ -44,6 +44,9 @@ function Dashboard() {
           </Route>
           <Route path='/dashboard/news'>
             <NewList />
+          </Route>
+          <Route path='/dashboard/events'>
+            <EventList />
           </Route>
           <Route path='/dashboard/profiles'>
             <ProfileList />

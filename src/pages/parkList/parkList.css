@@ -1,4 +1,4 @@
-.parkList{
+.parkList {
     flex: 4;
     margin-inline-start: 20px;
     margin-inline-end: 20px;
@@ -7,33 +7,36 @@
     margin-left: 20px;
 }
 
-.parkList h1{
+.parkList h1 {
     color: #00aae4;
     text-align: center;
     font-weight: bold;
 }
 
-
-.parkListDelete{
-    color: red;
-    cursor: pointer;
-    
+.mapa {
+    border-bottom: 10px;
+    border-top: 10px;
 }
 
-.parkListEdit{
+.parkListDelete {
+    color: red;
+    cursor: pointer;
+}
+
+.parkListEdit {
     color: green;
     cursor: pointer;
 }
 
-.linkListEdit{
+.linkListEdit {
     text-align: center;
 }
 
-.botonInsertar{
+.botonInsertar {
     float: right;
 }
 
-.mapa{
+.mapa {
     width: 450px;
     height: 300px;
 }

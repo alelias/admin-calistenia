@@ -3,14 +3,15 @@ import React from 'react'
 import FeaturedInfo from '../../components/featuredInfo/FeaturedInfo'
 import "./home.css"
 import WidgetLg from '../../components/widgetLg/WidgetLg'
-import WidgetSm from '../../components/widgetSm/WidgetSm'
+import WidgetRg from '../../components/widgetRg/WidgetRg'
 
 export default function Home() {
     return (
         <div className="home">
             <FeaturedInfo />
 
-           
+           <WidgetLg />
+           <WidgetRg />
         </div>
     )
 }

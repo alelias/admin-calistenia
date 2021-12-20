@@ -86,6 +86,7 @@ export default function NewList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idnoticia === news.idnoticia) {
             elemento.titulo = news.titulo;
+            elemento.descripcion = news.descripcion;
           }
         });
         setData(dataAuxiliar);

@@ -29,6 +29,8 @@ const layout = {
   },
 };
 
+const dateFormat = 'YYYY/MM/DD';
+
 export default function EventList() {
   const [data, setData] = useState([]);
   const [events, setEvents] = useState({
@@ -54,10 +56,21 @@ export default function EventList() {
     setModalEliminar(!modalEliminar);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEvents({ ...events, [name]: value });
-    alert(events);
+  const handleChange = ({target}) => {
+
+    setEvents(events => (
+      { ...events, [target.name] : target.value }
+    ) );
+   
+  };
+
+  const handleSelectChange = (date) => {
+    const fecha = date.format(dateFormat)
+    setEvents(events => (
+      { ...events, fecha : fecha }
+    ));
+    
+    
   };
 
   const seleccionarEvents = (events, caso) => {
@@ -77,7 +90,8 @@ export default function EventList() {
   };
 
   const peticionPost = async () => {
-    //delete artista.id;
+
+    
     await axios
       .post(baseUrl, events)
       .then((response) => {
@@ -88,6 +102,7 @@ export default function EventList() {
       .catch((error) => {
         console.log(error);
       });
+      
   };
 
   const peticionPut = async () => {
@@ -98,6 +113,8 @@ export default function EventList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idevento === events.idevento) {
             elemento.nombre = events.nombre;
+            elemento.fecha = events.fecha;
+            elemento.descripcion = events.descripcion;
           }
         });
         setData(dataAuxiliar);
@@ -207,7 +224,9 @@ export default function EventList() {
           <DatePicker
               name="fecha"
               style={{ width: 315 }}
-              onChange={(fecha) => setEvents(fecha)}
+              format={dateFormat}
+              defaultValue={moment('2021/12/17', dateFormat)}
+              onChange={handleSelectChange}
             />
           </Form.Item>
 
@@ -241,8 +260,9 @@ export default function EventList() {
           <Item label="Fecha">
             <DatePicker
               name="fecha"
-              onChange={handleChange}
-              value={events && events.fecha}
+              format={dateFormat}
+              defaultValue={moment(events && events.fecha, dateFormat)}
+              onChange={handleSelectChange}
             />
           </Item>
 

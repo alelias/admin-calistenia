@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Input, Form } from "antd";
+import { Table, Button, Modal, Input, Form, Select } from "antd";
 import "antd/dist/antd.css";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./userList.css";
 const axios = require("axios");
 const { Item } = Form;
+const { Option } = Select;
 
 const baseUrl = "https://back-calistenia.herokuapp.com/api/usuario";
 
@@ -24,7 +25,8 @@ export default function UserList() {
     idusuario: "",
     nombre: "",
     correo: "",
-    password: ""
+    password: "",
+    perfil:""
   });
 
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -47,6 +49,14 @@ export default function UserList() {
     const { name, value } = e.target;
     setUsers({ ...users, [name]: value });
     console.log(users);
+  };
+
+  const handleSelectChange = (selected) => {
+
+    setUsers(users => (
+      { ...users, perfil : selected }
+    ));
+   
   };
 
   const seleccionarUsers = (users, caso) => {
@@ -86,6 +96,9 @@ export default function UserList() {
         dataAuxiliar.map((elemento) => {
           if (elemento.idusuario === users.idusuario) {
             elemento.nombre = users.nombre;
+            elemento.correo = users.correo;
+            elemento.password = users.password;
+            elemento.perfil = users.perfil;
           }
         });
         setData(dataAuxiliar);
@@ -125,6 +138,12 @@ export default function UserList() {
       dataIndex: "correo",
       key: "correo",
     },
+    {
+      title: "Perfil",
+      dataIndex: "perfil",
+      key: "perfil",
+    },
+
 
     {
       title: "Acciones",
@@ -199,6 +218,18 @@ export default function UserList() {
               onChange={handleChange}
             />
           </Item>
+          <Item label="Perfil">
+            <Select
+              defaultValue="--Seleccione--"
+              style={{ width: 315 }}
+              name="perfil"
+              onChange={handleSelectChange}
+            >
+                 <Option key="Admin" value="Admin">Admin</Option>
+                 <Option key="App" value="App">App</Option>
+        
+            </Select>
+          </Item>
         </Form>
       </Modal>
 
@@ -239,6 +270,22 @@ export default function UserList() {
               onChange={handleChange}
               value={users && users.password}
             />
+          </Item>
+          <Item label="Perfil">
+            <Select
+              value={users && users.perfil}
+              style={{ width: 315 }}
+              name="perfil"
+              onChange={handleSelectChange}
+            >
+               {
+              data.map(perfil =>
+              (
+                 <Option key={perfil.perfil} value={perfil.perfil}>{perfil.perfil}</Option>
+              ))
+              }
+            
+            </Select>
           </Item>
         </Form>
       </Modal>
