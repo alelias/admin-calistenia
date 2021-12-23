@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Input, Form, Image } from "antd";
 import "antd/dist/antd.css";
-import { EditOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import ReactMapGL, { Marker, NavigationControl }  from 'react-map-gl';
-import "mapbox-gl/dist/mapbox-gl.css";
+
+import {useMapbox} from '../../hooks/useMapbox'
 import "./parkList.css";
 const { TextArea } = Input;
 const axios = require("axios");
@@ -22,44 +20,29 @@ const layout = {
   },
 };
 
+const puntoInicial = {
+  lng: -70.77501632397149,
+  lat: -33.53199106757794,
+  zoom: 15
+}
 
-
-const navStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  padding: "10px",
-};
 
 export default function ParkList() {
+
   const [data, setData] = useState([]);
   const [parks, setParks] = useState({
     idparque: "",
     nombre: "",
-    latitud: "",
-    longitud: "",
+    latitud: 0,
+    longitud: 0,
     descripcion: "",
   });
 
-  const [mapa, setMapa] = useState([]);
+const {setRef,coords} = useMapbox(puntoInicial);
 
-  const [viewport, setViewport] = useState({
-    width: 1200,
-    height: 300,
-    latitude: -33.53199106757794,
-    longitude: -70.77501632397149,
-    zoom: 15,
-    pitch: 30,
-  });
-
-
-  const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
 
-  const abrirCerrarModalInsertar = () => {
-    setModalInsertar(!modalInsertar);
-  };
 
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar);
@@ -69,28 +52,19 @@ export default function ParkList() {
     setModalEliminar(!modalEliminar);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setParks({ ...parks, [name]: value });
-   
+  const handleChange = ({target}) => {
+    setParks(parks => (
+      { ...parks, [target.name] : target.value }
+    ) );
   };
+  
 
   const seleccionarParks = (parks, caso) => {
     setParks(parks);
     caso === "Editar" ? abrirCerrarModalEditar() : abrirCerrarModalEliminar();
   };
 
-  useEffect(() => {
-    const peticionGetMapa = async () => {
-      const baseUrlParque = "https://back-calistenia.herokuapp.com/api/parque";
-
-      const mapa = await axios.get(baseUrlParque);
-      setMapa(mapa.data)
-      console.log(mapa.data)
-     
-    };
-    peticionGetMapa()
-  }, []);
+ 
 
   const peticionGet = async () => {
     
@@ -104,17 +78,19 @@ export default function ParkList() {
       });
   };
 
-  const peticionPost = async () => {
-    //delete artista.id;
+  const postPark = async (e) => {
+    
+   console.log(parks)
+    /*
     await axios
       .post(baseUrl, parks)
       .then((response) => {
         setData(data.concat(response.data));
-        abrirCerrarModalInsertar();
       })
       .catch((error) => {
         console.log(error);
       });
+      */
   };
 
   const peticionPut = async () => {
@@ -155,6 +131,7 @@ export default function ParkList() {
   useEffect(() => {
     peticionGet();
   }, []);
+
   const columns = [
     {
       title: "Nombre",
@@ -202,86 +179,45 @@ export default function ParkList() {
   ];
   return (
     <>
-    {/*
-    <div style={styles}>
-        <ReactMapGL
-          mapStyle={"mapbox://styles/mapbox/dark-v9"}
-          mapboxApiAccessToken={
-            "pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNrd2xocGtvMjA1bWsycHByeWttMHkwNGQifQ.EF73mGbhH1BYHtA83lEg8A"
-          }
-          {...viewport}
-          onViewportChange={(nextViewport) => setViewport(nextViewport)}
-        >
-          {data &&
-            data.map((park) => (
-              <Marker
-                latitude={park.latitud}
-                longitude={park.longitud}
-                offsetLeft={-20}
-                offsetTop={-10}
-              >
-                <img
-                  src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png"
-                  width={50}
-                  height={50}
-                />
-              </Marker>
-            ))}
 
-          <div className="nav" style={navStyle}>
-            <NavigationControl />
-          </div>
-        </ReactMapGL>
-      </div>
-            */}
     <div className="parkList">
     
       <br />
       <h1>Parques</h1>
-      <ReactMapGL
-    mapboxApiAccessToken={
-      "pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNrd2xocGtvMjA1bWsycHByeWttMHkwNGQifQ.EF73mGbhH1BYHtA83lEg8A"
-    }
-      {...viewport}
-      onViewportChange={nextViewport => setViewport(nextViewport)}
-    >
-      {
-            data.map((park) => (
-              <Marker
-                latitude={parseFloat(park.latitud)}
-                longitude={parseFloat(park.longitud)}
-                offsetLeft={-20}
-                offsetTop={-10}
-              >
-                <img
-                  src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png"
-                  width={50}
-                  height={50}
-                />
-              </Marker>
-            ))
-      }
+    <div className="contenedor-mapa ">
               
-{/* 
-            <Marker latitude={-33.53199106757794} longitude={-70.77501632397149} offsetLeft={-20} offsetTop={-10}>
-                    <img src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png" width={50} height={50}/>
-                </Marker>
-                <Marker latitude={-33.52771605667408} longitude={-70.77797748252992} offsetLeft={-20} offsetTop={-10}>
-                    <img src="https://cdn4.iconfinder.com/data/icons/basic-ui-pack-flat-s94-1/64/Basic_UI_Icon_Pack_-_Flat_map_pointer-512.png" width={50} height={50}/>
-                </Marker>
-*/}
-      <div className="nav" style={navStyle}>
-            <NavigationControl />
-          </div>
-    </ReactMapGL>
+        <div
+        ref={setRef}
+            className='mapContainer'
+        >
+        
+        </div>
+
+        <div className='form'>
+          <Form style={layout}>
+              <Item label="Nombre">
+                <Input name="nombre" onChange={handleChange} />
+              </Item>
+              <Item label="Latitud">
+                <Input name="latitud" onChange={handleChange} value={coords.lat}/>
+              </Item>
+              <Item label="Longitud">
+                <Input name="longitud"  onChange={handleChange} value={coords.lng} />
+              </Item>
+
+              <Item label="Descripcion">
+                <TextArea name="descripcion" rows={4} onChange={handleChange} />
+              </Item>
+              <Button type="primary" onClick={postPark}>
+              Insertar
+            </Button> 
+          </Form>
+            
+        </div>
+            
+ </div>
       <br />
-      <Button
-        type="primary"
-        className="botonInsertar"
-        onClick={abrirCerrarModalInsertar}
-      >
-        Registrar Parque Manualmente
-      </Button>
+ 
       <br />
       <br />
       <Table
@@ -290,36 +226,7 @@ export default function ParkList() {
         dataSource={data}
       />
 
-      <Modal
-        visible={modalInsertar}
-        title="Insertar Parque"
-        destroyOnClose={true}
-        onCancel={abrirCerrarModalInsertar}
-        centered
-        footer={[
-          <Button onClick={abrirCerrarModalInsertar}>Cancelar</Button>,
-          <Button type="primary" onClick={peticionPost}>
-            Insertar
-          </Button>,
-        ]}
-      >
-        <Form {...layout}>
-          <Item label="Nombre">
-            <Input name="nombre" onChange={handleChange} />
-          </Item>
-          <Item label="Latitud">
-            <Input name="latitud" onChange={handleChange} />
-          </Item>
-          <Item label="Longitud">
-            <Input name="longitud" onChange={handleChange} />
-          </Item>
-
-          <Item label="Descripcion">
-            <TextArea name="descripcion" rows={4} onChange={handleChange} />
-          </Item>
-        </Form>
-      </Modal>
-
+  
       <Modal
         visible={modalEditar}
         title="Editar Parque"

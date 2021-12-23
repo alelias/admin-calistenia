@@ -29,26 +29,18 @@ const Login = () => {
         axios.post("https://back-calistenia.herokuapp.com/api/login", entrar).then((response) => {
        
       
-        
+    console.log(response)
        if(response.status == 200){
             push('/dashboard/home')
-        }else if(response.status == 500){
-            Swal.fire(
-                'Error',
-                'Ingresar correo y contraseña validos',
-                'error'
-              )
-        }else{
-            Swal.fire(
-                'Error',
-                'Ingresar correo y contraseña validos',
-                'error'
-              )
+  
         }
         
-    
-          
         }).catch(({ response }) => {
+            Swal.fire(
+                'Error',
+                'Ingresar correo y contraseña validos',
+                'error'
+              )
             console.log(response.data)
         })
         

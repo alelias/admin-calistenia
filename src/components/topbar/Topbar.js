@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import "./topbar.css";
 import { Button } from "antd";
 import "antd/dist/antd.css";
 import { LogoutOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
-export default function topbar() {
+const Topbar = () => {
+
+  let history = useHistory();
+
+  const salir = () => {
+    history.push('/');
+    window.location.reload(true);
+  }
+  
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -13,7 +23,7 @@ export default function topbar() {
         </div>
 
         <div className="btnSalir">
-          <Button type="default" shape="round">
+          <Button onClick={salir} type="default" shape="round">
             <LogoutOutlined />
             Salir
           </Button>
@@ -22,3 +32,5 @@ export default function topbar() {
     </div>
   );
 }
+
+export default Topbar;

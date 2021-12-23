@@ -145,7 +145,7 @@ export default function RoutineList() {
 
   useEffect(() => {
     peticionGet();
-  }, []);
+  }, [data]);
 
  
 

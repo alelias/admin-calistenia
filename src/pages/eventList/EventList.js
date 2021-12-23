@@ -8,8 +8,11 @@ import {
   DatePicker,
   Select,
 } from "antd";
+import 'moment/locale/es-mx';
+import locale from 'antd/es/date-picker/locale/es_ES';
 import moment from 'moment';
 import "antd/dist/antd.css";
+
 //import { EditOutlined } from "@ant-design/icons";
 //import { Link } from "react-router-dom";
 import "./eventList.css";
@@ -223,6 +226,7 @@ export default function EventList() {
           <Form.Item label="Fecha">
           <DatePicker
               name="fecha"
+              locale={locale}
               style={{ width: 315 }}
               format={dateFormat}
               defaultValue={moment('2021/12/17', dateFormat)}
@@ -260,6 +264,7 @@ export default function EventList() {
           <Item label="Fecha">
             <DatePicker
               name="fecha"
+              locale={locale}
               format={dateFormat}
               defaultValue={moment(events && events.fecha, dateFormat)}
               onChange={handleSelectChange}

@@ -278,13 +278,9 @@ export default function UserList() {
               name="perfil"
               onChange={handleSelectChange}
             >
-               {
-              data.map(perfil =>
-              (
-                 <Option key={perfil.perfil} value={perfil.perfil}>{perfil.perfil}</Option>
-              ))
-              }
-            
+               <Option key="Admin" value="Admin">Admin</Option>
+                 <Option key="App" value="App">App</Option>
+        
             </Select>
           </Item>
         </Form>
