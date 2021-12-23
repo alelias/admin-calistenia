@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 const axios = require("axios");
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNreGV6ZHdpbzF5Y2sycXBmb2Q4cXAwOTIifQ.n2IlnUqJNEEfDHk6qPNsoQ';
+mapboxgl.accessToken = 'pk.eyJ1Ijoid2FsZXRhIiwiYSI6ImNreGY5ZWtreTFvbnUydXE5aTF5eno4cGUifQ.tIMnTnqPoymEqgtchY33ew';
 const baseUrl = "https://back-calistenia.herokuapp.com/api/parque";
 
 
@@ -66,7 +66,7 @@ export const useMapbox = (puntoInicial) => {
     },[])
 */
     useEffect(() => {
-        var map = new mapboxgl.Map({
+        const map = new mapboxgl.Map({
             container: mapaDiv.current,
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [puntoInicial.lng, puntoInicial.lat],

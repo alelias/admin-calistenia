@@ -29,16 +29,17 @@ const puntoInicial = {
 
 export default function ParkList() {
 
+  const {setRef,coords} = useMapbox(puntoInicial);
+
   const [data, setData] = useState([]);
   const [parks, setParks] = useState({
     idparque: "",
     nombre: "",
-    latitud: 0,
-    longitud: 0,
+    latitud: coords.lat,
+    longitud: coords.lng,
     descripcion: "",
   });
 
-const {setRef,coords} = useMapbox(puntoInicial);
 
   const [modalEditar, setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
@@ -52,12 +53,19 @@ const {setRef,coords} = useMapbox(puntoInicial);
     setModalEliminar(!modalEliminar);
   };
 
+  
   const handleChange = ({target}) => {
+    
     setParks(parks => (
       { ...parks, [target.name] : target.value }
     ) );
   };
   
+  useEffect(() => {
+    setParks((parks) => ({
+      ...parks, latitud: coords.lat, longitud: coords.lng
+    }))
+  },[coords])
 
   const seleccionarParks = (parks, caso) => {
     setParks(parks);
@@ -80,8 +88,7 @@ const {setRef,coords} = useMapbox(puntoInicial);
 
   const postPark = async (e) => {
     
-   console.log(parks)
-    /*
+  
     await axios
       .post(baseUrl, parks)
       .then((response) => {
@@ -90,7 +97,7 @@ const {setRef,coords} = useMapbox(puntoInicial);
       .catch((error) => {
         console.log(error);
       });
-      */
+      
   };
 
   const peticionPut = async () => {
@@ -190,7 +197,7 @@ const {setRef,coords} = useMapbox(puntoInicial);
         ref={setRef}
             className='mapContainer'
         >
-        
+ 
         </div>
 
         <div className='form'>
@@ -199,10 +206,10 @@ const {setRef,coords} = useMapbox(puntoInicial);
                 <Input name="nombre" onChange={handleChange} />
               </Item>
               <Item label="Latitud">
-                <Input name="latitud" onChange={handleChange} value={coords.lat}/>
+                <Input name="latitud" onChange={handleChange} value={coords.lat} readOnly/>
               </Item>
               <Item label="Longitud">
-                <Input name="longitud"  onChange={handleChange} value={coords.lng} />
+                <Input name="longitud"  onChange={handleChange} value={coords.lng} readOnly/>
               </Item>
 
               <Item label="Descripcion">
